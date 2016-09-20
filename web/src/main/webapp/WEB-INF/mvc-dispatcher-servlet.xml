@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+       xsi:schemaLocation="http://www.springframework.org/schema/data/elasticsearch
+       http://www.springframework.org/schema/data/elasticsearch/spring-elasticsearch-1.0.xsd
+       http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="com.spring.elasticsearch.controller"/>
+    <context:component-scan base-package="com.spring.elasticsearch.manager"/>
+    <context:component-scan base-package="com.spring.elasticsearch.repository"/>
+
+    <mvc:resources mapping="/resources/**" location="/resources/" />
+
+    <bean class="com.spring.elasticsearch.validador.ExamValidator"/>
+
+<bean name="elasticsearchTemplate" class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
+        <constructor-arg name="client" ref="client"/>
+    </bean>
+
+
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:annotation-driven/>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix">
+            <value>/WEB-INF/pages/</value>
+        </property>
+        <property name="suffix">
+            <value>.jsp</value>
+        </property>
+    </bean>
+
+    <!--elasticsearch:node-client id="client" local="true"/-->
+    <elasticsearch:transport-client id="client" cluster-nodes="10.211.55.102:9300,someip:9300"/>
+
+
+</beans>
